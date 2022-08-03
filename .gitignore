@@ -1,27 +1,3 @@
-<<<<<<< HEAD
-*.tgz
-*.h5
-*.hdf5
-*.swp
-*.swo
-#*.txt
-*.csv
-*.png
-*.log
-*.pkl
-*.pth
-*.swn
-##*.sh
-*.pyc
-*.pptx
-*.xlsx
-*.zip
-*.DS_Store
-*.tar
-#*.dat
-*.qpclassifier
-*.qpdata
-=======
 #<<<<<<< HEAD
 #<<<<<<< HEAD
 #*.tgz
@@ -46,13 +22,12 @@
 #*.dat
 #*.qpclassifier
 #*.qpdata
->>>>>>> 9c37d6284d430f8f0c82af4055d5c7b1277b4f5f
 #
 #
-#__pycache__/
+__pycache__/
 #.ropproject/
-#.idea/
-#.ipynb_checkpoints/
+.idea/
+.ipynb_checkpoints/
 #=======
 #legacy
 #notebooks
@@ -66,11 +41,7 @@
 #generated
 #data
 #text
-<<<<<<< HEAD
-##datasets
-=======
 #datasets
->>>>>>> 9c37d6284d430f8f0c82af4055d5c7b1277b4f5f
 #testout
 #
 ## Created by https://www.gitignore.io
@@ -91,11 +62,7 @@
 #dist/
 #downloads/
 #eggs/
-<<<<<<< HEAD
-##lib/
-=======
 #lib/
->>>>>>> 9c37d6284d430f8f0c82af4055d5c7b1277b4f5f
 #lib64/
 #parts/
 #sdist/
@@ -203,8 +170,6 @@
 #
 #
 #### C++ ###
-<<<<<<< HEAD
-=======
 #=======
 #data/*
 #
@@ -299,56 +264,40 @@
 ### General
 #
 #>>>>>>> eda8152c3c52c67679b6406fb05d508a609e70cd
->>>>>>> 9c37d6284d430f8f0c82af4055d5c7b1277b4f5f
 ## Compiled Object files
 #*.slo
 #*.lo
 #*.o
-<<<<<<< HEAD
-=======
 #<<<<<<< HEAD
->>>>>>> 9c37d6284d430f8f0c82af4055d5c7b1277b4f5f
 #*.obj
 #
 ## Precompiled Headers
 #*.gch
 #*.pch
 #
-<<<<<<< HEAD
-=======
 #=======
 #*.cuo
 #*.obj
 #
 #>>>>>>> eda8152c3c52c67679b6406fb05d508a609e70cd
->>>>>>> 9c37d6284d430f8f0c82af4055d5c7b1277b4f5f
 ## Compiled Dynamic libraries
 #*.so
 #*.dylib
 #*.dll
 #
-<<<<<<< HEAD
-## Fortran module files
-#*.mod
-#
-=======
 #<<<<<<< HEAD
 ## Fortran module files
 #*.mod
 #
 #=======
 #>>>>>>> eda8152c3c52c67679b6406fb05d508a609e70cd
->>>>>>> 9c37d6284d430f8f0c82af4055d5c7b1277b4f5f
 ## Compiled Static libraries
 #*.lai
 #*.la
 #*.a
 #*.lib
 #
-<<<<<<< HEAD
-=======
 #<<<<<<< HEAD
->>>>>>> 9c37d6284d430f8f0c82af4055d5c7b1277b4f5f
 ## Executables
 #*.exe
 #*.out
@@ -387,8 +336,6 @@
 #
 ## Linux trash folder which might appear on any partition or disk
 #.Trash-*
-<<<<<<< HEAD
-=======
 #>>>>>>> 274447dbea13021db88e6916e7b02d94fb1a1b00
 #=======
 ## Compiled protocol buffers
@@ -485,4 +432,5 @@
 #lib/model/utils/bbox.c
 #lib/pycocotools/_mask.c
 #>>>>>>> eda8152c3c52c67679b6406fb05d508a609e70cd
->>>>>>> 9c37d6284d430f8f0c82af4055d5c7b1277b4f5f
+runs/
+output/

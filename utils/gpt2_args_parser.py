@@ -24,6 +24,20 @@ class ArgsParser(object):
 
         # Other parameters
         parser.add_argument(
+            "--user_hubert",
+            action="store_true"
+        )
+        parser.add_argument(
+            "--train_dict_file",
+            default=None,
+            type=str
+        )
+        parser.add_argument(
+            "--eval_dict_file",
+            default=None,
+            type=str
+        )
+        parser.add_argument(
             "--eval_data_file",
             default=None,
             type=str,

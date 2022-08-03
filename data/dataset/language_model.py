@@ -6,6 +6,8 @@ from torch.utils.data.distributed import DistributedSampler
 from transformers import PreTrainedTokenizer
 import os
 import logging
+import json
+import re
 logger = logging.getLogger(__name__)
 
 
@@ -21,6 +23,34 @@ class LineByLineTextDataset(Dataset):
             lines = [line for line in f.read().splitlines() if (len(line) > 0 and not line.isspace())]
 
         self.examples = tokenizer.batch_encode_plus(lines, add_special_tokens=True, max_length=block_size)["input_ids"]
+
+    def __len__(self):
+        return len(self.examples)
+
+    def __getitem__(self, i):
+        return torch.tensor(self.examples[i], dtype=torch.long)
+
+class LineByLineDiscreteUserDataset(Dataset):
+    def __init__(self, tokenizer, args, file_path, dict_file_path , block_size=1024):
+        assert os.path.isfile(file_path)
+        # Here, we do not cache the features, operating under the assumption
+        # that we will soon use fast multithreaded tokenizers from the
+        # `tokenizers` repo everywhere =)
+        logger.info("Creating features from dataset file at %s", file_path)
+
+        self.id_to_hubert = json.load(open(dict_file_path))
+        with open(file_path, encoding="utf-8") as f:
+            lines = [self.replace_user_utt(line) for line in f.read().splitlines() if (len(line) > 0 and not line.isspace())]
+
+        self.examples = tokenizer.batch_encode_plus(lines, add_special_tokens=True, max_length=block_size)["input_ids"]
+    
+    def replace_user_utt(self, line):
+        user_utts = re.findall(r'<\|user\|>.*?<\|', line)
+        hub_unit_ids = [re.findall("\\[(.*?)\\]", x)[0] for x in user_utts]
+        for user_utt, hub_unit_id in zip(user_utts, hub_unit_ids):
+            line = line.replace(user_utt, f'<|user|> {" ".join(map(str, self.id_to_hubert[hub_unit_id]))} <|')
+        line = re.sub("\\[(.*?)\\]", '', line)
+        return line
 
     def __len__(self):
         return len(self.examples)
@@ -168,6 +198,10 @@ class LineByLineTextDataset_shuffle_belief_action(Dataset):
 def load_and_cache_examples(args, tokenizer, evaluate=False):
     file_path = args.eval_data_file if evaluate else args.train_data_file
     if not evaluate:
+        if args.user_hubert:
+            dict_file_path = args.train_dict_file
+            return LineByLineDiscreteUserDataset(tokenizer, args, file_path=file_path, dict_file_path=dict_file_path, 
+                                                 block_size=args.block_size)
         if args.shuffle_context:
             return LineByLineTextDataset_shuffle_context(tokenizer, args, file_path=file_path, block_size=args.block_size)
         elif args.shuffle_belief_action:
@@ -179,7 +213,12 @@ def load_and_cache_examples(args, tokenizer, evaluate=False):
         else:
             return LineByLineTextDataset(tokenizer, args, file_path=file_path, block_size=args.block_size)
     else:
-        return LineByLineTextDataset(tokenizer, args, file_path=file_path, block_size=args.block_size)
+        if args.user_hubert:
+            dict_file_path = args.eval_dict_file
+            return LineByLineDiscreteUserDataset(tokenizer, args, file_path=file_path, dict_file_path=dict_file_path, 
+                                                 block_size=args.block_size)
+        else:
+            return LineByLineTextDataset(tokenizer, args, file_path=file_path, block_size=args.block_size)
 
 
 def get_dataloader(dataset, tokenizer, args, split='train'):
